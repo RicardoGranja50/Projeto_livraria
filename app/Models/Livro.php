@@ -14,6 +14,7 @@ class Livro extends Model
     
     protected $fillable=[
 
+        
         'titulo',
         'idioma',
         'total_paginas',
