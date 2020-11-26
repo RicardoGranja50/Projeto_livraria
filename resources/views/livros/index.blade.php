@@ -13,4 +13,7 @@ Livraria
 </li>
 @endforeach
 </ul>
+
+<a href="{{route('livros.create')}}" class="btn btn-primary">Adicionar Livro</a>
+
 @endsection

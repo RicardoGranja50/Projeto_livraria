@@ -12,4 +12,6 @@ Livraria
 </a></li>
 @endforeach
 </ul>
+
+<a href="{{route('editoras.create')}}" class="btn btn-primary">Adicionar Editora</a>
 @endsection
