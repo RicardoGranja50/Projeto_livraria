@@ -20,6 +20,7 @@ class AutoresController extends Controller
         //$autores=Autor::findOrFail($idAutores);
         //$autores=Autor::find($idAutores);
         $autores=Autor::where('id_autor',$idAutores)->with('livros')->first();
+        
         return view('autores.show',[
             'autores'=>$autores
         ]);
@@ -44,5 +45,34 @@ class AutoresController extends Controller
         return redirect()->route('autores.show',[
             'ida'=>$autor->id_autor
         ]);
-}
+    }
+
+    public function edit(Request $req){
+
+        $idAutor=$req->ida;
+        $autor=Autor::where('id_autor',$idAutor)->first();
+        return view('autores.edit',[
+            'autor'=>$autor
+        ]);
+    }
+
+    public function update(Request $req){
+
+        $idAutor=$req->ida;
+        $autor=Autor::where('id_autor',$idAutor)->first();
+
+        $atualizarAutor=$req->validate([
+            'nome'=>['required','min:3','max:100'],
+            'nacionalidade'=>['nullable','min:3','max:20'],
+            'data_nascimento'=>['nullable','date'],
+            'fotografia'=>['nullable','min:3','max:255'],
+        ]);
+        
+        $autor->update($atualizarAutor);
+
+        return redirect()->route('autores.show',[
+            'ida'=>$autor->id_autor
+        ]);
+
+    }
 }

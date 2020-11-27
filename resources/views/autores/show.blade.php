@@ -12,9 +12,11 @@ Nome:{{$autores->nome}}<br>
         </div>
     @endif
 Nacionalidade:{{$autores->nacionalidade}}<br>
-Data de Nascimento:{{$autores->data_nascimento}}
+Data de Nascimento:{{$autores->data_nascimento->format('m-d-Y')}}
 Fotografia:{{$autores->fotografia}}<br>
 Created_at:{{$autores->created_at}}<br>
-Updated_at:{{$autores->updated_at}}<br>
-Deleted_at:{{$autores->deleted_at}}
+Updated_at:{{$autores->updated_at->format('m-d-Y')}}<br>
+Deleted_at:{{$autores->deleted_at}}<br>
+
+<a href="{{route('autores.edit',['ida'=>$autores->id_autor])}}" class="btn btn-primary">Editar Autor</a>
 </ul>

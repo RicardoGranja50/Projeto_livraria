@@ -10,7 +10,9 @@ class Autor extends Model
     use HasFactory;
     protected $primaryKey="id_autor";
     protected $table="autores"; 
-    
+    protected $dates=['data_nascimento'];
+
+
     protected $fillable=[
 
         'nome',
