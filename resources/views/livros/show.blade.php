@@ -9,7 +9,7 @@ Data Edição:{{$livro->data_edicao->format('m-d-Y')}}<br>
 @endif
 Total paginas:{{$livro->total_paginas}}<br>
 Observações:{{$livro->observacoes}}<br>
-Imagem Capa:{{$livro->imagem_capa}}<br>
+Imagem Capa:{{$livro->imagem_capa}}<br> 
 
 @if(count($livro->editoras)>0)
         @foreach($livro->editoras as $editora)
