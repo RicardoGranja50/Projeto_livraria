@@ -35,7 +35,16 @@ Livraria
     @if($errors->has('imagem_capa'))
         <b style="color:red">Erro</b><br>
     @endif
-    Genero: <input type="text" name="id_genero" value="{{$livro->id_genero}}"><br><br>
+    <b>Generos</b>
+    <select name="id_genero">
+        @foreach($generos as $genero)
+            <option value="{{$genero->id_genero}}"
+                @if($genero->id_genero==$livro->id_genero)selected @endif>
+               {{$genero->designacao}}
+            </option>
+        @endforeach
+    </select>
+    <br><br>
     @if($errors->has('id_genero'))
         <b style="color:red">Insira o id do genero</b><br>
     @endif
