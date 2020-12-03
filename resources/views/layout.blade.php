@@ -11,6 +11,11 @@
     <script src="{{asset('js/all.min.js')}}"></script>
 </head>
 <body>
+    @if(session()->has('msg')) 
+    <div class="alert alert-danger" role="alert">
+    {{session('msg')}}	
+		</div>   
+    @endif
     <h1 style="color: #00ff00;">@yield('header')</h1>
     @yield('conteudo')
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -23,5 +28,7 @@
     </div>
   </div>
 </nav>
+
+
 </body>
 </html>

@@ -19,4 +19,5 @@ Updated_at:{{$autores->updated_at->format('m-d-Y')}}<br>
 Deleted_at:{{$autores->deleted_at}}<br>
 
 <a href="{{route('autores.edit',['ida'=>$autores->id_autor])}}" class="btn btn-primary">Editar Autor</a>
+<a href="{{route('autores.delete',['ida'=>$autores->id_autor])}}" class="btn btn-primary">Eliminar Autor</a>
 </ul>

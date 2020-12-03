@@ -27,6 +27,10 @@ Route::get('/livros/create','App\Http\Controllers\LivrosController@create')->nam
 
 Route::post('/livros/store', 'App\Http\Controllers\LivrosController@store')->name('livros.store');
 
+Route::get('/livros/{id}/delete', 'App\Http\Controllers\LivrosController@delete')->name('livros.delete');
+
+Route::delete('/livros', 'App\Http\Controllers\LivrosController@destroy')->name('livros.destroy');
+
 //GENEROS
 
 
@@ -41,6 +45,10 @@ Route::post('/generos/store', 'App\Http\Controllers\GenerosController@store')->n
 Route::get('/generos/{idg}/edit','App\Http\Controllers\GenerosController@edit')->name('generos.edit');
 
 Route::patch('/generos/{idg}','App\Http\Controllers\GenerosController@update')->name('generos.update');
+
+Route::get('/generos/{idg}/delete', 'App\Http\Controllers\GenerosController@delete')->name('generos.delete');
+
+Route::delete('/generos', 'App\Http\Controllers\GenerosController@destroy')->name('generos.destroy');
 
 //EDITORAS
 
@@ -57,6 +65,12 @@ Route::get('/editoras/{ide}/edit','App\Http\Controllers\EditorasController@edit'
 
 Route::patch('/editoras/{ide}','App\Http\Controllers\EditorasController@update')->name('editoras.update');
 
+Route::get('/editoras/{ide}/delete', 'App\Http\Controllers\EditorasController@delete')->name('editoras.delete');
+
+Route::delete('/editoras', 'App\Http\Controllers\EditorasController@destroy')->name('editoras.destroy');
+
+
+
 //AUTORES
 
 
@@ -71,6 +85,10 @@ Route::post('/autores/store', 'App\Http\Controllers\AutoresController@store')->n
 Route::get('/autores/{ida}/edit','App\Http\Controllers\AutoresController@edit')->name('autores.edit');
 
 Route::patch('/autores/{ida}','App\Http\Controllers\AutoresController@update')->name('autores.update');
+
+Route::get('/autores/{ida}/delete', 'App\Http\Controllers\AutoresController@delete')->name('autores.delete');
+
+Route::delete('/autores', 'App\Http\Controllers\AutoresController@destroy')->name('autores.destroy');
 
 //EDICOES
 
