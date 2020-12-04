@@ -45,7 +45,13 @@ Livraria
     @if($errors->has('id_genero'))
         <b style="color:red">Insira o id do genero</b><br>
     @endif
-    Autor: <input type="text" name="id_autor" value="{{old('id_autor')}}"><br><br>
+    <b>Autores</b>
+   <select name="id_autor[]" multiple="multiple">
+        @foreach($autores as $autor)
+            <option value="{{$autor->id_autor}}">{{$autor->nome}}</option>
+        @endforeach
+    </select>
+    <br><br>
     @if($errors->has('id_autor'))
         <b style="color:red">Insira o id do autor</b><br>
     @endif
@@ -53,6 +59,13 @@ Livraria
     @if($errors->has('sinopse'))
         <b style="color:red">Insira a sinopse do livro</b><br>
     @endif
+    <br><br>
+    <b>Editora</b>
+   <select name="id_editora[]" multiple="multiple">
+        @foreach($editoras as $editora)
+            <option value="{{$editora->id_editora}}">{{$editora->nome}}</option>
+        @endforeach
+    </select>
     <input type="submit" value="enviar">
 </form>
 @endsection

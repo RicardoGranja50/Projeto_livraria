@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Livro;
 use App\Models\Genero;
+use App\Models\Autor;
+use App\Models\Editora;
 
 class LivrosController extends Controller
 {
@@ -29,8 +31,12 @@ class LivrosController extends Controller
     public function create(){
 
         $generos=Genero::all();
+        $autores=Autor::all();
+        $editoras=Editora::all();
         return view('livros.create',[
             'generos'=>$generos,
+            'autores'=>$autores,
+            'editoras'=>$editoras,
         ]);
     }
 
@@ -38,18 +44,22 @@ class LivrosController extends Controller
 
         $novoLivro=$req->validate([
             'titulo'=>['required','min:3','max:100'],
-            'idioma'=>['required','min:3','max:20'],
+            'idioma'=>['required','min:3','max:10'],
             'total_paginas'=>['nullable','numeric','min:1'],
             'data_edicao'=>['nullable','date'],
             'isbn'=>['nullable','min:13','max:13'],
             'observacoes'=>['nullable','min:3','max:1000'],
             'imagem_capa'=>['nullable','min:3','max:255'],
             'id_genero'=>['nullable','numeric'],
-            'id_autor'=>['nullable','numeric'],
             'sinopse'=>['nullable','min:3','max:255']
         ]);
 
+        $autores=$req->id_autor;
+        $editoras=$req->id_editora;
+
         $livro=Livro::create($novoLivro);
+        $livro->autores()->attach($autores);
+        $livro->editoras()->attach($editoras);
         
         return redirect()->route('livros.show',[
             'id'=>$livro->id_livro
@@ -59,11 +69,29 @@ class LivrosController extends Controller
     public function edit(Request $req){
 
         $generos=Genero::all();
+        $autores=Autor::all();
+        $editoras=Editora::all();
+
         $idLivro=$req->id;
-        $livro=Livro::where('id_livro',$idLivro)->first();
+        $livro=Livro::where('id_livro',$idLivro)->with(['autores','editoras'])->first();
+        $autoresLivro= [];
+        foreach($livro->autores as $autor){
+            $autoresLivro[]=$autor->id_autor;
+        }
+
+        $editorasLivro= [];
+        foreach($livro->editoras as $editora){
+            $editorasLivro[]=$editora->id_editora;
+        }
+
+
         return view('livros.edit',[
             'livro'=>$livro,
             'generos'=>$generos,
+            'autores'=>$autores,
+            'editoras'=>$editoras,
+            'autoresLivro'=>$autoresLivro,
+            'editorasLivro'=>$editorasLivro,
         ]);
     }
 
@@ -81,11 +109,15 @@ class LivrosController extends Controller
             'observacoes'=>['nullable','min:3','max:1000'],
             'imagem_capa'=>['nullable','min:3','max:255'],
             'id_genero'=>['nullable','numeric'],
-            'id_autor'=>['nullable','numeric'],
             'sinopse'=>['nullable','min:3','max:255']
         ]);
         
+        $editoras=$req->id_editora;
+        $autores=$req->id_autor;
+
         $livro->update($atualizarLivro);
+        $livro->autores()->sync($autores);
+        $livro->editoras()->sync($editoras);
 
         return redirect()->route('livros.show',[
             'id'=>$livro->id_livro
@@ -112,6 +144,11 @@ class LivrosController extends Controller
 
         $livro= Livro::where('id_livro', $r->id)->first();
         
+        $autoresLivro=Livro::findOrfail($r->id)->autores;
+        $editorasLivro=Livro::findOrfail($r->id)->editoras;
+        $livro->autores()->detach($autoresLivro);
+        $livro->editoras()->detach($editorasLivro);
+
         if(is_null($livro)){
 
             return redirect()->route('livros.index')->with('msg','O livro não existe');
