@@ -13,7 +13,7 @@ Livraria
 </li>
 @endforeach
 </ul>
-
+@if(auth()->check())
 <a href="{{route('livros.create')}}" class="btn btn-primary">Adicionar Livro</a>
-
+@endif
 @endsection

@@ -7,6 +7,7 @@ use App\Models\Livro;
 use App\Models\Genero;
 use App\Models\Autor;
 use App\Models\Editora;
+use Auth;
 
 class LivrosController extends Controller
 {
@@ -53,6 +54,10 @@ class LivrosController extends Controller
             'id_genero'=>['nullable','numeric'],
             'sinopse'=>['nullable','min:3','max:255']
         ]);
+        if(Auth::check()){
+            $userAtual=Auth::user()->id;
+            $novoLivro['id_user']=$userAtual;
+        }
 
         $autores=$req->id_autor;
         $editoras=$req->id_editora;

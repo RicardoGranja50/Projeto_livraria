@@ -25,9 +25,27 @@
       <a class="nav-item nav-link" href="{{route('editoras.index')}}">Editoras</a>
       <a class="nav-item nav-link" href="{{route('autores.index')}}">Autores</a>
       <a class="nav-item nav-link" href="{{route('pesquisa.index')}}">Pesquisa</a>
+      @if(auth()->check()) 
+      <a class="nav-item nav-link" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+      @else
+      <a class="nav-item nav-link" href="{{route('home')}}">Login</a>
+      @endif
     </div>
   </div>
 </nav>
+
+@if(auth()->check())
+<b>Email utilizador:</b> {{Auth::user()->email}}<br>
+<b>Nome utilizador:</b> {{Auth::user()->name}}<br>
+@endif
 
 
 </body>
