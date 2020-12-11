@@ -138,8 +138,9 @@ class LivrosController extends Controller
 
     public function delete(Request $r){
 
-        if(Auth::check()){
-            $livro= Livro::where('id_livro', $r->id)->first();
+        $livro= Livro::where('id_livro', $r->id)->first();
+        if(Auth::check() && auth()->user()->id == $livro->id_user){
+            
             if(is_null($livro)){
 
                 return redirect()->route('livros.index')->with('msg','O livro não existe');
@@ -152,7 +153,7 @@ class LivrosController extends Controller
             }
         }
         else{
-            return redirect()->route('livros.esquisa')->with('msg','erro');
+            return redirect()->route('livros.index')->with('msg','Loggin nao efetuado');
         }
 
     }
