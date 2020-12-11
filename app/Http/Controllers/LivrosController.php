@@ -73,13 +73,14 @@ class LivrosController extends Controller
 
     public function edit(Request $req){
 
-        if(Auth::check() || Auth::check()->id == Auth::check()->id_user){
-            $generos=Genero::all();
-            $autores=Autor::all();
-            $editoras=Editora::all();
+        $generos=Genero::all();
+        $autores=Autor::all();
+        $editoras=Editora::all();
 
-            $idLivro=$req->id;
-            $livro=Livro::where('id_livro',$idLivro)->with(['autores','editoras','user'])->first();
+        $idLivro=$req->id;
+        $livro=Livro::where('id_livro',$idLivro)->with(['autores','editoras','user'])->first();
+        if(Auth::check() && auth()->user()->id == $livro->id_user){
+            
             $autoresLivro= [];
             foreach($livro->autores as $autor){
                 $autoresLivro[]=$autor->id_autor;
@@ -101,7 +102,7 @@ class LivrosController extends Controller
             ]);
         }
         else{
-            return redirect()->route('livros.esquisa')->with('msg','erro');
+            return redirect()->route('livros.index')->with('msg','Loggin nao efetuado');
         }
        
     }
