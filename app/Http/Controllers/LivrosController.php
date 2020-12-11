@@ -23,7 +23,7 @@ class LivrosController extends Controller
         $idLivro = $request->id;
         //$livro=Livro::findOrFail($idLivro);
         //$livro=Livro::find($idLivro);
-        $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras'])->first();
+        $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras','user'])->first();
         return view('livros.show',[
             'livro'=>$livro
         ]);
@@ -73,31 +73,37 @@ class LivrosController extends Controller
 
     public function edit(Request $req){
 
-        $generos=Genero::all();
-        $autores=Autor::all();
-        $editoras=Editora::all();
+        if(Auth::check() || Auth::check()->id == Auth::check()->id_user){
+            $generos=Genero::all();
+            $autores=Autor::all();
+            $editoras=Editora::all();
 
-        $idLivro=$req->id;
-        $livro=Livro::where('id_livro',$idLivro)->with(['autores','editoras'])->first();
-        $autoresLivro= [];
-        foreach($livro->autores as $autor){
-            $autoresLivro[]=$autor->id_autor;
+            $idLivro=$req->id;
+            $livro=Livro::where('id_livro',$idLivro)->with(['autores','editoras','user'])->first();
+            $autoresLivro= [];
+            foreach($livro->autores as $autor){
+                $autoresLivro[]=$autor->id_autor;
+            }
+
+            $editorasLivro= [];
+            foreach($livro->editoras as $editora){
+                $editorasLivro[]=$editora->id_editora;
+            }
+
+
+            return view('livros.edit',[
+                'livro'=>$livro,
+                'generos'=>$generos,
+                'autores'=>$autores,
+                'editoras'=>$editoras,
+                'autoresLivro'=>$autoresLivro,
+                'editorasLivro'=>$editorasLivro,
+            ]);
         }
-
-        $editorasLivro= [];
-        foreach($livro->editoras as $editora){
-            $editorasLivro[]=$editora->id_editora;
+        else{
+            return redirect()->route('livros.esquisa')->with('msg','erro');
         }
-
-
-        return view('livros.edit',[
-            'livro'=>$livro,
-            'generos'=>$generos,
-            'autores'=>$autores,
-            'editoras'=>$editoras,
-            'autoresLivro'=>$autoresLivro,
-            'editorasLivro'=>$editorasLivro,
-        ]);
+       
     }
 
     public function update(Request $req){
@@ -127,22 +133,27 @@ class LivrosController extends Controller
         return redirect()->route('livros.show',[
             'id'=>$livro->id_livro
         ]);
-
     }
 
     public function delete(Request $r){
 
-        $livro= Livro::where('id_livro', $r->id)->first();
-        if(is_null($livro)){
+        if(Auth::check()){
+            $livro= Livro::where('id_livro', $r->id)->first();
+            if(is_null($livro)){
 
-            return redirect()->route('livros.index')->with('msg','O livro não existe');
+                return redirect()->route('livros.index')->with('msg','O livro não existe');
+            }
+            else{
+
+                return view('livros.delete',[
+                    'livro'=>$livro,
+                ]);
+            }
         }
         else{
-
-            return view('livros.delete',[
-                'livro'=>$livro,
-            ]);
+            return redirect()->route('livros.esquisa')->with('msg','erro');
         }
+
     }
 
     public function destroy(Request $r){
