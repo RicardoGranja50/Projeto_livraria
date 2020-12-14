@@ -55,4 +55,9 @@ class Livro extends Model
 
         return $this->belongsTo('App\Models\User','id_user');
     }
+
+    public function like(){
+
+        return $this->belongsTo('App\Models\Like','id_livro');
+    }
 }

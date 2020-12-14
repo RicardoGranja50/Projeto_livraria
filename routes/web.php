@@ -105,7 +105,7 @@ Route::get('/','App\Http\Controllers\PesquisaController@index')->name('pesquisa.
 Route::post('/form','App\Http\Controllers\PesquisaController@formenviado')->name('pesquisa.form');
 
 
-
+Route::get('/likes/{id}','App\Http\Controllers\LivrosController@like')->name('livros.like');
 
 
 
@@ -115,3 +115,5 @@ Route::post('/form','App\Http\Controllers\PesquisaController@formenviado')->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+

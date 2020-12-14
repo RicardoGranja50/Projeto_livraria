@@ -7,6 +7,7 @@ use App\Models\Livro;
 use App\Models\Genero;
 use App\Models\Autor;
 use App\Models\Editora;
+use App\Models\Like;
 use Auth;
 
 class LivrosController extends Controller
@@ -20,12 +21,21 @@ class LivrosController extends Controller
         ]);
     }
     public function show(Request $request){
+        $utilizador="";
         $idLivro = $request->id;
+        
         //$livro=Livro::findOrFail($idLivro);
         //$livro=Livro::find($idLivro);
+        if(Auth::check()){
+            $userAtual=Auth::user()->id;
+            $utilizador=Like::where('id_user', $userAtual)->where('id_livro', $idLivro)->first();
+        }
+        $likes=Like::where('id_livro', $idLivro)->count();
         $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras','user'])->first();
         return view('livros.show',[
-            'livro'=>$livro
+            'livro'=>$livro,
+            'likes'=>$likes,
+            'utilizador'=>$utilizador,
         ]);
     }
 
@@ -102,7 +112,7 @@ class LivrosController extends Controller
             ]);
         }
         else{
-            return redirect()->route('livros.index')->with('msg','Loggin nao efetuado');
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
         }
        
     }
@@ -177,5 +187,22 @@ class LivrosController extends Controller
             return redirect()->route('livros.index');
         }
 
+    }
+
+    public function like(Request $req){
+
+        $idLivro=$req->id;
+        $userAtual=Auth::user()->id;
+        $utilizador=Like::where('id_user', $userAtual)->where('id_livro', $idLivro)->first();
+        if(!isset($utilizador)){
+            if(Auth::check()){
+                $novoLike['id_livro']=$idLivro;
+                $novoLike['id_user']=$userAtual;
+                $like=Like::create($novoLike);
+            }
+            return redirect()->route('livros.show',['id'=>$idLivro]);
+
+        }
+        
     }
 }
