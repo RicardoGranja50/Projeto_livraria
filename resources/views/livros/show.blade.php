@@ -52,7 +52,7 @@ Created_at:{{$livro->created_at}}<br>
 Updated_at:{{$livro->updated_at}}<br>
 Deleted_at:{{$livro->deleted_at}}<br>
 
-
+<br>
 @if(auth()->check())
     @if($utilizador==NULL) 
         <a href="{{route('livros.like',['id'=>$livro->id_livro])}}" class="btn btn-primary"> <i class="far fa-heart"></i></a>
@@ -63,7 +63,7 @@ Deleted_at:{{$livro->deleted_at}}<br>
     @endif
 @endif
 
-
+<br><BR>
 @if($livro->id_user != NULL)
 
     @if(auth()->check())

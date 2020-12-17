@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Genero;
+use Illuminate\Support\Facades\Gate;
 
 class GenerosController extends Controller
 {
@@ -26,79 +27,106 @@ class GenerosController extends Controller
     }
 
     public function create(){
-
-        return view('generos.create');
+        if(Gate::allows('admin')){
+            return view('generos.create');
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function store(Request $req){
 
-        $novoGenero=$req->validate([
-            'designacao'=>['required','min:3','max:30'],
-            'observacoes'=>['nullable','min:3','max:255'],
-        ]);
+        if(Gate::allows('admin')){
+            $novoGenero=$req->validate([
+                'designacao'=>['required','min:3','max:30'],
+                'observacoes'=>['nullable','min:3','max:255'],
+            ]);
 
-        $genero=Genero::create($novoGenero);
+            $genero=Genero::create($novoGenero);
 
-        return redirect()->route('generos.show',[
-            'idg'=>$genero->id_genero
-        ]);
+            return redirect()->route('generos.show',[
+                'idg'=>$genero->id_genero
+            ]);
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function edit(Request $req){
 
-        $idGenero=$req->idg;
-        $genero=Genero::where('id_genero',$idGenero)->first();
-        return view('generos.edit',[
-            'genero'=>$genero
-        ]);
+        if(Gate::allows('admin')){
+            $idGenero=$req->idg;
+            $genero=Genero::where('id_genero',$idGenero)->first();
+            return view('generos.edit',[
+                'genero'=>$genero
+            ]);
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function update(Request $req){
 
-        $idGenero=$req->idg;
-        $genero=Genero::where('id_genero',$idGenero)->first();
+        if(Gate::allows('admin')){
+            $idGenero=$req->idg;
+            $genero=Genero::where('id_genero',$idGenero)->first();
 
-        $atualizarGenero=$req->validate([
-            'designacao'=>['required','min:3','max:30'],
-            'observacoes'=>['nullable','min:3','max:255'],
-        ]);
-        
-        $genero->update($atualizarGenero);
+            $atualizarGenero=$req->validate([
+                'designacao'=>['required','min:3','max:30'],
+                'observacoes'=>['nullable','min:3','max:255'],
+            ]);
+            
+            $genero->update($atualizarGenero);
 
-        return redirect()->route('generos.show',[
-            'idg'=>$genero->id_genero
-        ]);
-
+            return redirect()->route('generos.show',[
+                'idg'=>$genero->id_genero
+            ]);
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function delete(Request $r){
 
-        $genero= Genero::where('id_genero', $r->idg)->first();
-        if(is_null($genero)){
+        if(Gate::allows('admin')){
+            $genero= Genero::where('id_genero', $r->idg)->first();
+            if(is_null($genero)){
 
-            return redirect()->route('generos.index')->with('msg','O genero não existe');
+                return redirect()->route('generos.index')->with('msg','O genero não existe');
+            }
+            else{
+
+                return view('generos.delete',[
+                    'genero'=>$genero,
+                ]);
+            }
         }
         else{
-
-            return view('generos.delete',[
-                'genero'=>$genero,
-            ]);
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
         }
     }
 
     public function destroy(Request $r){
 
-        $genero= Genero::where('id_genero', $r->idg)->first();
-        
-        if(is_null($genero)){
+        if(Gate::allows('admin')){
+            $genero= Genero::where('id_genero', $r->idg)->first();
+            
+            if(is_null($genero)){
 
-            return redirect()->route('generos.index')->with('msg','O genero não existe');
+                return redirect()->route('generos.index')->with('msg','O genero não existe');
+            }
+            else{
+
+                $genero->delete();
+                return redirect()->route('generos.index');
+            }
         }
         else{
-
-            $genero->delete();
-            return redirect()->route('generos.index');
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
         }
-
     }
 }

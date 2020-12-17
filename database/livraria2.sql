@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 11-Dez-2020 às 17:54
+-- Generation Time: 17-Dez-2020 às 15:23
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -243,6 +243,7 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_user` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'normal' COMMENT 'admin ou normal',
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -252,10 +253,10 @@ CREATE TABLE `users` (
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Ricardo', 'Ricapt555@gmail.com', NULL, '$2y$10$2wnaE7Rv4tu2oAH.MXaCp.2f.8CE8WfoGvthkXBa15GMCWQqhUvTu', NULL, '2020-12-10 13:56:58', '2020-12-10 13:56:58'),
-(2, 'aaa ddd', 'a@a.com', NULL, '$2y$10$9YryJvuLFBiSR7/6/28bOOZFSgo.e7A753gkfAhb3dZ620OL2zo1O', 'XWmFYDADGZbkRBBjK2cqhbVjwid7lQLG3tDyJtKMoZAKHoTaixMl28yaQUQo', '2020-12-10 14:41:59', '2020-12-10 14:41:59'),
-(3, 'rafa', 'rafa@aaa.com', NULL, '$2y$10$QT43TpcaOeGXhxSYrv7W2OlNOIaJLEDL1GUkup5b4GYAe6SVF.L42', NULL, '2020-12-11 15:21:53', '2020-12-11 15:21:53');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `tipo_user`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Ricardo', 'Ricapt555@gmail.com', NULL, '$2y$10$2wnaE7Rv4tu2oAH.MXaCp.2f.8CE8WfoGvthkXBa15GMCWQqhUvTu', 'normal', NULL, '2020-12-10 13:56:58', '2020-12-10 13:56:58'),
+(2, 'aaa ddd', 'a@a.com', NULL, '$2y$10$9YryJvuLFBiSR7/6/28bOOZFSgo.e7A753gkfAhb3dZ620OL2zo1O', 'normal', 'XWmFYDADGZbkRBBjK2cqhbVjwid7lQLG3tDyJtKMoZAKHoTaixMl28yaQUQo', '2020-12-10 14:41:59', '2020-12-10 14:41:59'),
+(3, 'rafa', 'rafa@aaa.com', NULL, '$2y$10$QT43TpcaOeGXhxSYrv7W2OlNOIaJLEDL1GUkup5b4GYAe6SVF.L42', 'normal', NULL, '2020-12-11 15:21:53', '2020-12-11 15:21:53');
 
 --
 -- Indexes for dumped tables
