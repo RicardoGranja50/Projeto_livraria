@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Editora;
+use Illuminate\Support\Facades\Gate;
 
 class EditorasController extends Controller
 {
@@ -27,80 +28,110 @@ class EditorasController extends Controller
 
     public function create(){
 
-        return view('editoras.create');
+        if(Gate::allows('admin')){
+            return view('editoras.create');
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function store(Request $req){
 
-        $novaEditora=$req->validate([
-            'nome'=>['required','min:3','max:100'],
-            'morada'=>['nullable','min:3','max:255'],
-            'observacoes'=>['nullable','min:3','max:255'],
-            
-        ]);
+        if(Gate::allows('admin')){
+            $novaEditora=$req->validate([
+                'nome'=>['required','min:3','max:100'],
+                'morada'=>['nullable','min:3','max:255'],
+                'observacoes'=>['nullable','min:3','max:255'],
+                
+            ]);
 
-        $editora=Editora::create($novaEditora);
+            $editora=Editora::create($novaEditora);
 
-        return redirect()->route('editoras.show',[
-            'ide'=>$editora->id_editora
-        ]);
+            return redirect()->route('editoras.show',[
+                'ide'=>$editora->id_editora
+            ]);
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function edit(Request $req){
 
-        $idEditora=$req->ide;
-        $editora=Editora::where('id_editora',$idEditora)->first();
-        return view('editoras.edit',[
-            'editora'=>$editora
-        ]);
+        if(Gate::allows('admin')){
+            $idEditora=$req->ide;
+            $editora=Editora::where('id_editora',$idEditora)->first();
+            return view('editoras.edit',[
+                'editora'=>$editora
+            ]);
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
     }
 
     public function update(Request $req){
 
-        $idEditora=$req->ide;
-        $editora=Editora::where('id_editora',$idEditora)->first();
+        if(Gate::allows('admin')){
+            $idEditora=$req->ide;
+            $editora=Editora::where('id_editora',$idEditora)->first();
 
-        $atualizarEditora=$req->validate([
-            'nome'=>['required','min:3','max:100'],
-            'morada'=>['nullable','min:3','max:255'],
-            'observacoes'=>['nullable','min:3','max:255'],
-        ]);
-        
-        $editora->update($atualizarEditora);
+            $atualizarEditora=$req->validate([
+                'nome'=>['required','min:3','max:100'],
+                'morada'=>['nullable','min:3','max:255'],
+                'observacoes'=>['nullable','min:3','max:255'],
+            ]);
+            
+            $editora->update($atualizarEditora);
 
-        return redirect()->route('editoras.show',[
-            'ide'=>$editora->id_editora
-        ]);
+            return redirect()->route('editoras.show',[
+                'ide'=>$editora->id_editora
+            ]);
+        }
+        else{
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
+        }
 
     }
 
     public function delete(Request $r){
 
-        $editora= Editora::where('id_editora', $r->ide)->first();
-        if(is_null($editora)){
+        if(Gate::allows('admin')){
+            $editora= Editora::where('id_editora', $r->ide)->first();
+            if(is_null($editora)){
 
-            return redirect()->route('editoras.index')->with('msg','A editora não existe');
+                return redirect()->route('editoras.index')->with('msg','A editora não existe');
+            }
+            else{
+
+                return view('editoras.delete',[
+                    'editora'=>$editora,
+                ]);
+            }
         }
         else{
-
-            return view('editoras.delete',[
-                'editora'=>$editora,
-            ]);
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
         }
     }
 
     public function destroy(Request $r){
 
-        $editora= Editora::where('id_editora', $r->ide)->first();
-        
-        if(is_null($editora)){
+        if(Gate::allows('admin')){
+            $editora= Editora::where('id_editora', $r->ide)->first();
+            
+            if(is_null($editora)){
 
-            return redirect()->route('editoras.index')->with('msg','A editora não existe');
+                return redirect()->route('editoras.index')->with('msg','A editora não existe');
+            }
+            else{
+
+                $editora->delete();
+                return redirect()->route('editoras.index');
+            }
         }
         else{
-
-            $editora->delete();
-            return redirect()->route('editoras.index');
+            return redirect()->route('livros.index')->with('msg','Sem permissão');
         }
 
     }
