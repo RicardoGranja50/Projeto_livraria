@@ -54,7 +54,7 @@ class LivrosController extends Controller
 
     public function store(Request $req){
 
-            if(Gate::allows('admin')){
+            
 
                 $novoLivro=$req->validate([
                     'titulo'=>['required','min:3','max:100'],
@@ -82,10 +82,7 @@ class LivrosController extends Controller
                 return redirect()->route('livros.show',[
                     'id'=>$livro->id_livro
                 ]);
-            }
-            else{
-                return redirect()->route('livros.index')->with('msg','Sem permissão');
-            }
+            
     }
 
     public function edit(Request $req){
@@ -96,7 +93,7 @@ class LivrosController extends Controller
 
         $idLivro=$req->id;
         $livro=Livro::where('id_livro',$idLivro)->with(['autores','editoras','user'])->first();
-        if(Gate::allows('admin')){
+        if(Gate::allows('atualizar-livro',$livro) || Gate::allows('admin')){
             
             $autoresLivro= [];
             foreach($livro->autores as $autor){
@@ -160,7 +157,7 @@ class LivrosController extends Controller
     public function delete(Request $r){
 
         $livro= Livro::where('id_livro', $r->id)->first();
-        if(Gate::allows('admin')){
+        if(Gate::allows('atualizar-livro',$livro) ||Gate::allows('admin')){
             
             if(is_null($livro)){
 
@@ -182,7 +179,7 @@ class LivrosController extends Controller
     public function destroy(Request $r){
 
         $livro= Livro::where('id_livro', $r->id)->first();
-        if(Gate::allows('admin')){
+        if(Gate::allows('atualizar-livro',$livro) ||Gate::allows('admin')){
             $autoresLivro=Livro::findOrfail($r->id)->autores;
             $editorasLivro=Livro::findOrfail($r->id)->editoras;
             $livro->autores()->detach($autoresLivro);

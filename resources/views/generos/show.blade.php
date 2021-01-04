@@ -22,7 +22,8 @@ Deleted_at:{{$genero->deleted_at}}<br>
 
 
 
-@if(auth()->check())
+
+@if(Gate::allows('admin'))
 <a href="{{route('generos.edit',['idg'=>$genero->id_genero])}}" class="btn btn-primary">Editar Genero</a>
 <a href="{{route('generos.delete',['idg'=>$genero->id_genero])}}" class="btn btn-primary">Eliminar Genero</a>
 @endif

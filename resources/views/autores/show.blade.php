@@ -18,7 +18,7 @@ Created_at:{{$autores->created_at}}<br>
 Updated_at:{{$autores->updated_at}}<br>
 Deleted_at:{{$autores->deleted_at}}<br>
 
-@if(auth()->check())
+@if(Gate::allows('admin'))
 <a href="{{route('autores.edit',['ida'=>$autores->id_autor])}}" class="btn btn-primary">Editar Autor</a>
 <a href="{{route('autores.delete',['ida'=>$autores->id_autor])}}" class="btn btn-primary">Eliminar Autor</a>
 @endif

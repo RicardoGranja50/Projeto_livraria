@@ -64,10 +64,9 @@ Deleted_at:{{$livro->deleted_at}}<br>
 @endif
 
 <br><BR>
-@if($livro->id_user != NULL)
-
+@if($livro->id_user != NULL || Gate::allows('admin'))  
     @if(auth()->check())
-        @if(auth()->user()->id == $livro->id_user)
+        @if(auth()->user()->id == $livro->id_user || Gate::allows('admin'))
             <a href="{{route('livros.edit',['id'=>$livro->id_livro])}}" class="btn btn-primary">Editar Livro</a>
 
             <a href="{{route('livros.delete',['id'=>$livro->id_livro])}}" class="btn btn-primary">Eliminar Livro</a> 
