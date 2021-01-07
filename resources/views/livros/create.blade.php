@@ -5,7 +5,7 @@ Livraria
 @section('conteudo')
 
 <h3 style="font-family:Noto Sans"> Adicionar Livro</h3><br>
-<form action="{{route('livros.store')}}" method="post">
+<form action="{{route('livros.store')}}" enctype="multipart/form-data" method="post">
     @csrf
     Titulo: (<b style="color:red">*</b>)<input type="text" name="titulo" value="{{old('titulo')}}"><br><br>
     @if($errors->has('titulo'))
@@ -31,7 +31,7 @@ Livraria
     @if($errors->has('observacoes'))
         <b style="color:red">Insira uma observação</b><br>
     @endif
-    Imagem Capa: <input type="text" name="imagem_capa" value="{{old('imagem_capa')}}"><br><br>
+    Imagem Capa: <input type="file" name="imagem_capa" value="{{old('imagem_capa')}}"><br><br>
     @if($errors->has('imagem_capa'))
         <b style="color:red">Erro</b><br>
     @endif

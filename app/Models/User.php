@@ -45,4 +45,7 @@ class User extends Authenticatable
 
         return $this->belongsTo('App\Models\Like','id_user');
     }
+    
+    protected $primaryKey="id";
+    protected $table="users";   
 }

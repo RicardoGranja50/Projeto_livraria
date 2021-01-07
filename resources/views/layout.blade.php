@@ -24,6 +24,7 @@
       <a class="nav-item nav-link" href="{{route('generos.index')}}">Generos</a>
       <a class="nav-item nav-link" href="{{route('editoras.index')}}">Editoras</a>
       <a class="nav-item nav-link" href="{{route('autores.index')}}">Autores</a>
+      <a class="nav-item nav-link" href="{{route('users.show')}}">Users</a>
       <a class="nav-item nav-link" href="{{route('pesquisa.index')}}">Pesquisa</a>
       @if(auth()->check()) 
       <a class="nav-item nav-link" href="{{ route('logout') }}"

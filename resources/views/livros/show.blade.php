@@ -9,7 +9,12 @@ Data Edição:{{$livro->data_edicao->format('m-d-Y')}}<br>
 @endif
 Total paginas:{{$livro->total_paginas}}<br>
 Observações:{{$livro->observacoes}}<br>
-Imagem Capa:{{$livro->imagem_capa}}<br> 
+@if($livro->imagem_capa != NULL)
+    Imagem Capa:<br>
+    <img src="{{asset('imagens/livro/'.$livro->imagem_capa) }}"><br> 
+@else
+    Imagem Capa: inexistente<br>
+@endif
 @if(isset ($livro->user->name))
     Adicionado por: {{$livro->user->name}}<br>
 @else

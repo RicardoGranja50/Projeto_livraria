@@ -107,8 +107,10 @@ Route::post('/form','App\Http\Controllers\PesquisaController@formenviado')->name
 
 Route::get('/likes/{id}','App\Http\Controllers\LivrosController@like')->name('livros.like');
 
+//ALGO
 
 
+Route::get('/users/show','App\Http\Controllers\UsersController@show')->name('users.show');
 
 
 

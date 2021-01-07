@@ -3,7 +3,7 @@
 Livraria
 @endsection
 @section('conteudo')
-<form action="{{route('livros.update', ['id'=>$livro->id_livro])}}" method="post">
+<form action="{{route('livros.update', ['id'=>$livro->id_livro])}}"enctype="multipart/form-data" method="post">
     @csrf
     @method('patch')
 
@@ -31,7 +31,7 @@ Livraria
     @if($errors->has('observacoes'))
         <b style="color:red">Insira uma observação</b><br>
     @endif
-    Imagem Capa: <input type="text" name="imagem_capa" value="{{$livro->imagem_capa}}"><br><br>
+    Imagem Capa: <input type="file" name="imagem_capa" value="{{$livro->imagem_capa}}"><br><br>
     @if($errors->has('imagem_capa'))
         <b style="color:red">Erro</b><br>
     @endif
