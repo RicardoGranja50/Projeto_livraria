@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 17-Dez-2020 às 15:23
+-- Generation Time: 07-Jan-2021 às 14:58
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -185,6 +185,13 @@ CREATE TABLE `likes` (
   `id_livro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `likes`
+--
+
+INSERT INTO `likes` (`id_likes`, `id_user`, `id_livro`) VALUES
+(1, 1, 14);
+
 -- --------------------------------------------------------
 
 --
@@ -229,7 +236,7 @@ INSERT INTO `livros` (`id_livro`, `titulo`, `idioma`, `total_paginas`, `data_edi
 (13, 'Gestão da Informação em Museus: uma contribuição para o seu estudo', 'Português', NULL, NULL, '9789899901394', NULL, NULL, 2, 4, NULL, NULL, NULL, NULL, 0),
 (14, 'Web 2.0 and Higher Education. A psychological perspective', 'Inglês', NULL, NULL, '9783659683466', NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, 0),
 (15, 'Contribuições para a discussão de um modelo de Governo Eletrónico Local para Angola', 'Português', NULL, NULL, '9789899933200', NULL, NULL, 1, 13, NULL, NULL, NULL, NULL, 0),
-(17, 'aaaa', 'aaaaa', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2020-12-11 15:02:17', '2020-12-11 15:02:17', NULL, 1);
+(17, 'aaaa', 'aaaaa', NULL, NULL, NULL, NULL, '1610014278_Desert.jpg', 1, NULL, NULL, '2020-12-11 15:02:17', '2021-01-07 10:11:18', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -254,7 +261,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `tipo_user`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Ricardo', 'Ricapt555@gmail.com', NULL, '$2y$10$2wnaE7Rv4tu2oAH.MXaCp.2f.8CE8WfoGvthkXBa15GMCWQqhUvTu', 'normal', NULL, '2020-12-10 13:56:58', '2020-12-10 13:56:58'),
+(1, 'Ricardo', 'Ricapt555@gmail.com', NULL, '$2y$10$2wnaE7Rv4tu2oAH.MXaCp.2f.8CE8WfoGvthkXBa15GMCWQqhUvTu', 'admin', NULL, '2020-12-10 13:56:58', '2020-12-10 13:56:58'),
 (2, 'aaa ddd', 'a@a.com', NULL, '$2y$10$9YryJvuLFBiSR7/6/28bOOZFSgo.e7A753gkfAhb3dZ620OL2zo1O', 'normal', 'XWmFYDADGZbkRBBjK2cqhbVjwid7lQLG3tDyJtKMoZAKHoTaixMl28yaQUQo', '2020-12-10 14:41:59', '2020-12-10 14:41:59'),
 (3, 'rafa', 'rafa@aaa.com', NULL, '$2y$10$QT43TpcaOeGXhxSYrv7W2OlNOIaJLEDL1GUkup5b4GYAe6SVF.L42', 'normal', NULL, '2020-12-11 15:21:53', '2020-12-11 15:21:53');
 
@@ -342,7 +349,7 @@ ALTER TABLE `generos`
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id_likes` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_likes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `livros`

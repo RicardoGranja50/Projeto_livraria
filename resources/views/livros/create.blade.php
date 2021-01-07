@@ -35,6 +35,11 @@ Livraria
     @if($errors->has('imagem_capa'))
         <b style="color:red">Erro</b><br>
     @endif
+    Exerto: <input type="file" name="exerto" value="{{old('exerto')}}"><br><br>
+    @if($errors->has('exerto'))
+        <b style="color:red">Erro</b><br>
+    @endif
+
     <b>Generos</b>
     <select name="id_genero">
         @foreach($generos as $genero)

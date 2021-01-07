@@ -25,7 +25,8 @@ class Livro extends Model
         'id_genero',
         'id_autor',
         'sinopse',
-        'id_user'
+        'id_user',
+        'exerto'
     ];
 
     public function genero(){

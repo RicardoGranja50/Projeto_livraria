@@ -9,12 +9,21 @@ Data Edição:{{$livro->data_edicao->format('m-d-Y')}}<br>
 @endif
 Total paginas:{{$livro->total_paginas}}<br>
 Observações:{{$livro->observacoes}}<br>
+
 @if($livro->imagem_capa != NULL)
     Imagem Capa:<br>
     <img src="{{asset('imagens/livro/'.$livro->imagem_capa) }}"><br> 
 @else
     Imagem Capa: inexistente<br>
 @endif
+
+@if($livro->exerto != NULL)
+    Exerto:
+    <a href="{{asset('documentos/livro/'.$livro->exerto) }}" target="_blank">PDF</a><br>
+@else
+    Exerto: inexistente<br>
+@endif
+
 @if(isset ($livro->user->name))
     Adicionado por: {{$livro->user->name}}<br>
 @else

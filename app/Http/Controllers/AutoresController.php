@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Autor;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class AutoresController extends Controller
 {
@@ -44,8 +45,17 @@ class AutoresController extends Controller
                 'nome'=>['required','min:3','max:100'],
                 'nacionalidade'=>['nullable','min:3','max:20'],
                 'data_nascimento'=>['nullable','date'],
-                'fotografia'=>['nullable','min:3','max:255'],
+                'fotografia'=>['image','nullable','max:2000']
             ]);
+
+            if($req->hasFile('fotografia')){
+                $nomeFotografia=$req->file('fotografia')->getClientOriginalName();
+
+                $nomeFotografia=time().'_'.$nomeFotografia;
+                $guardarFotografia=$req->file('fotografia')->storeAs('imagens/autores',$nomeFotografia);
+
+                $novoAutor['fotografia']=$nomeFotografia;
+            }
 
             $autor=Autor::create($novoAutor);
 
@@ -77,14 +87,29 @@ class AutoresController extends Controller
         if(Gate::allows('admin')){
             $idAutor=$req->ida;
             $autor=Autor::where('id_autor',$idAutor)->first();
+            $fotografiaAntiga=$autor->fotografia;
 
             $atualizarAutor=$req->validate([
                 'nome'=>['required','min:3','max:100'],
                 'nacionalidade'=>['nullable','min:3','max:20'],
                 'data_nascimento'=>['nullable','date'],
-                'fotografia'=>['nullable','min:3','max:255'],
+                'fotografia'=>['nullable','image','max:2000
+                '],
             ]);
             
+            if($req->hasFile('fotografia')){
+                $nomeFotografia=$req->file('fotografia')->getClientOriginalName();
+
+                $nomeFotografia=time().'_'.$nomeFotografia;
+                $guardarFotografia=$req->file('fotografia')->storeAs('imagens/autores',$nomeFotografia);
+
+                if(!is_null($fotografiaAntiga)){
+                    
+                    Storage::Delete('imagens/autores/'.$fotografiaAntiga);
+                }
+                $atualizarAutor['fotografia']=$nomeFotografia;
+            }
+
             $autor->update($atualizarAutor);
 
             return redirect()->route('autores.show',[

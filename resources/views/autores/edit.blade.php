@@ -4,7 +4,7 @@ Livraria
 @endsection
 @section('conteudo')
 
-<form action="{{route('autores.update', ['ida'=>$autor->id_autor])}}" method="post">
+<form action="{{route('autores.update', ['ida'=>$autor->id_autor])}}" enctype="multipart/form-data" method="post">
     @csrf
     @method('patch')
     
@@ -24,7 +24,7 @@ Livraria
         <b style="color:red">Insira uma data</b><br>
     @endif
 
-    Fotografia: <input type="text" name="fotografia" value="{{$autor->fotografia}}"><br><br>
+    Fotografia: <input type="file" name="fotografia" value="{{$autor->fotografia}}"><br><br>
     @if($errors->has('fotografia'))
         <b style="color:red">ERRO</b><br>
     @endif

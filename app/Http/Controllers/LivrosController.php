@@ -9,6 +9,7 @@ use App\Models\Autor;
 use App\Models\Editora;
 use App\Models\Like;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 
 class LivrosController extends Controller
@@ -62,7 +63,8 @@ class LivrosController extends Controller
                     'observacoes'=>['nullable','min:3','max:1000'],
                     'imagem_capa'=>['image','nullable','max:2000'],
                     'id_genero'=>['nullable','numeric'],
-                    'sinopse'=>['nullable','min:3','max:255']
+                    'sinopse'=>['nullable','min:3','max:255'],
+                    'exerto'=>['file','mimes:pdf','max:2000']
                 ]);
 
                 if($req->hasFile('imagem_capa')){
@@ -73,6 +75,16 @@ class LivrosController extends Controller
 
                     $novoLivro['imagem_capa']=$nomeImagem;
                 }
+
+                if($req->hasFile('exerto')){
+                    $nomeExerto=$req->file('exerto')->getClientOriginalName();
+
+                    $nomeExerto=time().'_'.$nomeExerto;
+                    $guardarExerto=$req->file('exerto')->storeAs('documentos/livro',$nomeExerto);
+
+                    $novoLivro['exerto']=$nomeExerto;
+                }
+
 
                 if(Auth::check()){
                     $userAtual=Auth::user()->id;
@@ -132,6 +144,8 @@ class LivrosController extends Controller
 
         $idLivro=$req->id;
         $livro=Livro::where('id_livro',$idLivro)->first();
+        $imagemAntiga=$livro->imagem_capa;
+        $exertoAntigo=$livro->exerto;
         if(Gate::allows('atualizar-livro',$livro) ||Gate::allows('admin')){
             $atualizarLivro=$req->validate([
                 'titulo'=>['required','min:3','max:100'],
@@ -143,7 +157,8 @@ class LivrosController extends Controller
                 'imagem_capa'=>['nullable','image','max:2000
                 '],
                 'id_genero'=>['nullable','numeric'],
-                'sinopse'=>['nullable','min:3','max:255']
+                'sinopse'=>['nullable','min:3','max:255'],
+                'exerto'=>['file','mimes:pdf','max:2000']
             ]);
             
             if($req->hasFile('imagem_capa')){
@@ -152,7 +167,24 @@ class LivrosController extends Controller
                 $nomeImagem=time().'_'.$nomeImagem;
                 $guardarImagem=$req->file('imagem_capa')->storeAs('imagens/livro',$nomeImagem);
 
+                if(!is_null($imagemAntiga)){
+                    
+                    Storage::Delete('imagens/livro/'.$imagemAntiga);
+                }
                 $atualizarLivro['imagem_capa']=$nomeImagem;
+            }
+
+            if($req->hasFile('exerto')){
+                $nomeExerto=$req->file('exerto')->getClientOriginalName();
+
+                $nomeExerto=time().'_'.$nomeExerto;
+                $guardarExerto=$req->file('exerto')->storeAs('documentos/livro',$nomeExerto);
+
+                if(!is_null($exertoAntigo)){
+                    
+                    Storage::Delete('documentos/livro/'.$exertoAntigo);
+                }
+                $atualizarLivro['exerto']=$nomeExerto;
             }
 
             $editoras=$req->id_editora;

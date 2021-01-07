@@ -4,7 +4,7 @@ Livraria
 @endsection
 @section('conteudo')
 
-<form action="{{route('autores.store')}}" method="post">
+<form action="{{route('autores.store')}}" enctype="multipart/form-data" method="post">
     @csrf
 
     <h3 style="font-family:Noto Sans"> Adicionar Autor</h3><br>
@@ -23,7 +23,7 @@ Livraria
         <b style="color:red">Insira uma data</b><br>
     @endif
 
-    Fotografia: <input type="text" name="fotografia" value="{{old('fotografia')}}"><br><br>
+    Fotografia: <input type="file" name="fotografia" value="{{old('fotografia')}}"><br><br>
     @if($errors->has('fotografia'))
         <b style="color:red">ERRO</b><br>
     @endif
